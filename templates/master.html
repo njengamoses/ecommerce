@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Django App</title>
+    {% load static %}
+    <script src="{% static 'bootstrap/js/jquery-3.4.0.js' %}"></script>
+    <script src="{% static 'bootstrap/js/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/style.css' %}">
+</head>
+<body>
+<section>
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+        <!-- Brand -->
+        <a class="navbar-brand" href="{% url 'homepage'%}">S.GVG eCommerce</a>
+
+        <!-- Toggler/collapsibe Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'homepage' %}">Home</a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'all-products' %}">Product</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'add-product-page' %}">Add Products</a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link" href="#">Contact us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'user-registration' %}">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Blog</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</section>
+
+<section class="content-section">
+    {% for message in messages  %}
+        <p class="text-center">{{ message }}</p>
+
+    {% endfor %}
+
+    {% block content %}
+
+    {% endblock %}
+</section>
+
+</body>
+</html>
