@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+{% extends 'master.html' %}
+{% load static %}
+{% block content %}
+    <div>
+    <h1 class="text-dark text-center "> Paying for {{ product.name }}</h1>
+    <form class="product-form" method="post" action="" >
+        <P>{{ success }}</P>
+        {% csrf_token %}
+        <input value="{{ product.price}}" required readonly class="form-control"  name="p-price" type="text"><br>
+        <input  required  class="form-control"  name="c-phone"  placeholder="Phone number" type="text"><br>
+        <input class="btn btn-dark" value="Pay" type="submit">
+    </form>
 
-</body>
-</html>
+    </div>
+{% endblock%}

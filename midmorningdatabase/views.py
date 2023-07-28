@@ -1,13 +1,22 @@
+from __future__ import unicode_literals
+from django_daraja.mpesa import utils
+from django.http import HttpResponse, JsonResponse
+from django.views.generic import View
+from django_daraja.mpesa.core import MpesaClient
+from decouple import config
+from datetime import datetime
+
 from django.shortcuts import render, redirect
 from .models import Product
 from django.contrib import messages
 from .forms import UserRegistrationForm
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
     return render(request, 'index.html')
 
-
+@login_required
 def add_product(request):
     if request.method == "POST":
         prod_name = request.POST.get("p-name")
@@ -27,20 +36,20 @@ def add_product(request):
         return render(request, 'add-products.html', context)
     return render(request, 'add-products.html')
 
-
+@login_required
 def product(request):
     all_product = Product.objects.all()
     context = {"all_products": all_product}
     return render(request, 'products.html', context)
 
-
+@login_required
 def delete_product(request, id):
     products = Product.objects.get(id=id)
     products.delete()
     messages.success(request, 'Product deleted successfully')
     return redirect('all-products')
 
-
+@login_required
 def update_product(request, id):
     product = Product.objects.get(id=id)
     context = {"product": product}
@@ -62,8 +71,42 @@ def update_product(request, id):
 def register(request):
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
-        messages.success(request, "User registered successfully")
-        return redirect('User-registration')
+        if form.is_valid():
+            form.save()
+            messages.success(request, "User Registered Successfully")
+            return redirect('user-registration')
     else:
         form = UserRegistrationForm()
-    return render(request, 'register.html', {'form' : form})
+    return render(request, 'register.html', {'form': form})
+
+def shop(request):
+    products = Product.objects.all()
+    context = {"products": products}
+    return render(request, 'shop.html', context)
+
+mpesa_client = MpesaClient()
+stk_push_callback_url = 'https://api.darajambili.com/express-payment'
+
+
+def auth_success(request):
+    response = mpesa_client.access_token()
+    return JsonResponse(response, safe=False)
+
+
+def pay(request, id):
+    product = Product.objects.get(id=id)
+    context = {"product": product}
+    if request.method == "POST":
+        phone_number = request.POST.get('c-phone')
+        product_price = request.POST.get('p-price')
+        product_price = int(product_price)
+        receipt_number = "PAYMENT_1"
+        transaction_desc = "Paying for a product"
+        transaction = mpesa_client.stk_push(phone_number, product_price,
+                                            receipt_number, transaction_desc,
+                                            stk_push_callback_url)
+
+        return JsonResponse(transaction.response_description, safe=False)
+
+    return render(request, 'pay.html', context)
+

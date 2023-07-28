@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Django App</title>
     {% load static %}
+    {% load crispy_forms_tags %}
     <script src="{% static 'bootstrap/js/jquery-3.4.0.js' %}"></script>
     <script src="{% static 'bootstrap/js/popper.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
@@ -25,28 +26,40 @@
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav">
                  <li class="nav-item">
-                    <a class="nav-link" href="{% url 'homepage' %}">Home</a>
+                    <a class="nav-link" href="{% url 'homepage' %}">HOME</a>
                 </li>
                  <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
+                    <a class="nav-link" href="#">ABOUT</a>
                 </li>
+
                  <li class="nav-item">
-                    <a class="nav-link" href="{% url 'all-products' %}">Product</a>
+                    <a class="nav-link" href="#">CONTACT US</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'add-product-page' %}">Add Products</a>
+                    <a class="nav-link" href="{% url 'shop' %}">SHOP</a>
                 </li>
-                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contact us</a>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                         <a class="nav-link" href="{% url 'user-logout' %}">LOGOUT</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'user-registration' %}">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Login</a>
+                     <li class="nav-item">
+                    <a class="nav-link" href="{% url 'all-products' %}">PRODUCT</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Blog</a>
+                    <a class="nav-link" href="{% url 'add-product-page' %}">ADD PRODUCTS</a>
+                </li>
+
+                {% else %}
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'user-registration' %}">REGISTER</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'user-login' %}">LOGIN</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#">BLOG</a>
                 </li>
             </ul>
         </div>

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ak6+06anag(edp@)fll-r-qmr7mghtie8s4^=(s@e=&9$ka!wj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'midmorningdatabase',
     'crispy_forms',
-    'crispy_bootstrap4'
+    'crispy_bootstrap4',
+    'django_daraja'
 ]
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap4'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -130,3 +131,6 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = 'homepage'
+LOGIN_URL = 'user-login'
